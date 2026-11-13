@@ -1,0 +1,21 @@
+<!Doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>映画の一覧</title>
+</head>
+<body>
+  <h2>映画の一覧</h2>
+  <table>
+    <tr><th>ID</th><th>作品名</th><th>監督</th><th>公開年</th><th>ジャンル</th></tr>
+      <% for( let row of data ) { %>
+        <tr><td><%= row.id %></td>
+        <td><%= row.title %></td>
+        <td><%= row.director %></td>
+        <td><%= row.year %></td>
+        <td><%= row.genre %></td></tr>
+      <% } %>
+  </table>
+  <a href="/public/movie_add.html">映画を追加する</a>
+</body>
+</html>
