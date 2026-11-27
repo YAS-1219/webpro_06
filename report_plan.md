@@ -25,17 +25,19 @@ memo | 文字列 | 感想 | 何度観ても面白い
 ### ページ遷移図
 ```mermaid
 stateDiagram-v2
-[*] --> 一覧(/movie)
-一覧(/movie) --> 詳細(/movie/:number):作品名を選択
-詳細(/movie/:number) --> 一覧(/movie):一覧に戻る
-一覧(/movie) --> 追加フォーム:追加
+state "一覧(/movie)" as list
+state "詳細(/movie/#58;number)" as detail
+[*] --> list
+list --> detail:作品名を選択
+detail --> list:一覧に戻る
+list --> 追加フォーム:追加
 追加フォーム --> 追加処理:登録
-追加処理 --> 一覧(/movie):リダイレクト
-詳細(/movie/:number) --> 編集フォーム:編集
+追加処理 --> list:リダイレクト
+detail --> 編集フォーム:編集
 編集フォーム --> 変更処理:更新
-変更処理 --> 詳細(/movie/:number):リダイレクト
-詳細(/movie/:number) --> 削除処理:削除
-削除処理 --> 一覧(/movie):リダイレクト
+変更処理 --> detail:リダイレクト
+detail --> 削除処理:削除
+削除処理 --> list:リダイレクト
 ```
 
 ## 2. TRPGシナリオ管理システム
@@ -59,17 +61,19 @@ memo | 文字列 | メモ | ロスト率高め
 ### ページ遷移図
 ```mermaid
 stateDiagram-v2
-[*] --> 一覧(/scenario)
-一覧(/scenario) --> 詳細(/scenario/:number):シナリオ名を選択
-詳細(/scenario/:number) --> 一覧(/scenario):一覧に戻る
-一覧(/scenario) --> 追加フォーム:追加
+state "一覧(/scenario)" as list
+state "詳細(/scenario/#58;number)" as detail
+[*] --> list
+list --> detail:シナリオ名を選択
+detail --> list:一覧に戻る
+list --> 追加フォーム:追加
 追加フォーム --> 追加処理:登録
-追加処理 --> 一覧(/scenario):リダイレクト
-詳細(/scenario/:number) --> 編集フォーム:編集
+追加処理 --> list:リダイレクト
+detail --> 編集フォーム:編集
 編集フォーム --> 変更処理:更新
-変更処理 --> 詳細(/scenario/:number):リダイレクト
-詳細(/scenario/:number) --> 削除処理:削除
-削除処理 --> 一覧(/scenario):リダイレクト
+変更処理 --> detail:リダイレクト
+detail --> 削除処理:削除
+削除処理 --> list:リダイレクト
 ```
 
 ## 3. 課題管理システム
@@ -91,15 +95,17 @@ memo | 文字列 | メモ | 仕様書はMarkdown
 ### ページ遷移図
 ```mermaid
 stateDiagram-v2
-[*] --> 一覧(/task)
-一覧(/task) --> 詳細(/task/:number):課題名を選択
-詳細(/task/:number) --> 一覧(/task):一覧に戻る
-一覧(/task) --> 追加フォーム:追加
+state "一覧(/task)" as list
+state "詳細(/task/#58;number)" as detail
+[*] --> list
+list --> detail:課題名を選択
+detail --> list:一覧に戻る
+list --> 追加フォーム:追加
 追加フォーム --> 追加処理:登録
-追加処理 --> 一覧(/task):リダイレクト
-詳細(/task/:number) --> 編集フォーム:編集
+追加処理 --> list:リダイレクト
+detail --> 編集フォーム:編集
 編集フォーム --> 変更処理:更新
-変更処理 --> 詳細(/task/:number):リダイレクト
-詳細(/task/:number) --> 削除処理:削除
-削除処理 --> 一覧(/task):リダイレクト
+変更処理 --> detail:リダイレクト
+detail --> 削除処理:削除
+削除処理 --> list:リダイレクト
 ```
