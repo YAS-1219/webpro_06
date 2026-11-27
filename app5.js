@@ -64,6 +64,13 @@ app.get("/keiyo2/:number", (req, res) => {
   res.render('keiyo2_detail', {id: number, data: detail} );
 });
 
+app.get("/keiyo2/delete/:number", (req, res) => {
+  const number = Number( req.params.number );
+  if( !hasStation2( number ) ) return res.status(404).send('該当する駅がありません');
+  station2.splice( number, 1 );
+  res.redirect('/keiyo2');
+});
+
 app.post("/keiyo2", (req, res) => {
   let id = 1;
   for( const row of station2 ) {
