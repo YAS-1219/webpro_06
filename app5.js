@@ -3,6 +3,7 @@ const app = express();
 
 app.set('view engine', 'ejs');
 app.use("/public", express.static(__dirname + "/public"));
+app.use(express.urlencoded({ extended: true }));
 
 // ===== 第8回 データの流れ =====
 let station = [
@@ -42,28 +43,59 @@ let station2 = [
   { id:7, code:"JE18", name:"蘇我駅", change:"内房線，外房線", passengers:31328, distance:43.0 },
 ];
 
+function hasStation2( number ) {
+  return Number.isInteger( number ) && number >= 0 && number < station2.length;
+}
+
 app.get("/keiyo2", (req, res) => {
   // 本来ならここにDBとのやり取りが入る
   res.render('keiyo2', {data: station2} );
 });
 
-app.get("/keiyo2/:number", (req, res) => {
-  // 本来ならここにDBとのやり取りが入る
-  const number = req.params.number;
-  const detail = station2[ number ];
-  res.render('keiyo2_detail', {data: detail} );
+app.get("/keiyo2/create", (req, res) => {
+  res.redirect('/public/keiyo2_new.html');
 });
 
-app.get("/keiyo2_add", (req, res) => {
-  let id = Number( req.query.id );
-  let code = req.query.code;
-  let name = req.query.name;
-  let change = req.query.change;
-  let passengers = Number( req.query.passengers );
-  let distance = Number( req.query.distance );
-  let newdata = { id: id, code: code, name: name, change: change, passengers: passengers, distance: distance };
-  station2.push( newdata );
+app.get("/keiyo2/:number", (req, res) => {
+  // 本来ならここにDBとのやり取りが入る
+  const number = Number( req.params.number );
+  if( !hasStation2( number ) ) return res.status(404).send('該当する駅がありません');
+  const detail = station2[ number ];
+  res.render('keiyo2_detail', {id: number, data: detail} );
+});
+
+app.post("/keiyo2", (req, res) => {
+  let id = 1;
+  for( const row of station2 ) {
+    if( row.id >= id ) id = row.id + 1;
+  }
+  const code = req.body.code;
+  const name = req.body.name;
+  const change = req.body.change;
+  const passengers = Number( req.body.passengers );
+  const distance = Number( req.body.distance );
+  station2.push( { id: id, code: code, name: name, change: change, passengers: passengers, distance: distance } );
+  console.log( station2 );
   res.redirect('/keiyo2');
+});
+
+app.get("/keiyo2/edit/:number", (req, res) => {
+  const number = Number( req.params.number );
+  if( !hasStation2( number ) ) return res.status(404).send('該当する駅がありません');
+  const detail = station2[ number ];
+  res.render('keiyo2_edit', {id: number, data: detail} );
+});
+
+app.post("/keiyo2/update/:number", (req, res) => {
+  const number = Number( req.params.number );
+  if( !hasStation2( number ) ) return res.status(404).send('該当する駅がありません');
+  station2[number].code = req.body.code;
+  station2[number].name = req.body.name;
+  station2[number].change = req.body.change;
+  station2[number].passengers = Number( req.body.passengers );
+  station2[number].distance = Number( req.body.distance );
+  console.log( station2 );
+  res.redirect('/keiyo2/' + number);
 });
 
 

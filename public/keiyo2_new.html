@@ -2,15 +2,11 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>駅を追加する(詳細データ付き)</title>
+    <title>駅の新規登録</title>
 </head>
 <body>
-    <h2>駅を追加する</h2>
-    <form action="/keiyo2_add">
-        <p>
-            <label for="id">ID</label>
-            <input type="number" name="id" id="id" required>
-        </p>
+    <h2>駅の新規登録</h2>
+    <form action="/keiyo2" method="POST">
         <p>
             <label for="code">駅コード</label>
             <input type="text" name="code" id="code" required>
